@@ -1,17 +1,32 @@
 import express, { Request, Response } from "express";
 import dotenv from "dotenv";
-import cors from 'cors';
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import passport from "passport";
+
+import "./config/passport-setup";
+import authRoutes from "./routes/auth.routes";
 
 dotenv.config();
 
 const app = express();
 const PORT = process.env.PORT || 3001;
 
-app.use(cors());
-app.use(express.json());
+app.use(
+   cors({
+      origin: "http://localhost:3000",
+      credentials: true,
+   })
+);
 
-app.get('/api/health-check', (req: Request, res: Response) => {
-  res.json({ message: 'Hello from the Express server! I am healthy!' });
+app.use(cookieParser());
+app.use(express.json());
+app.use(passport.initialize());
+
+app.use("/api/auth", authRoutes);
+
+app.get("/api/health-check", (req: Request, res: Response) => {
+   res.json({ message: "Server is healthy and running!" });
 });
 
 app.listen(PORT, () => {
