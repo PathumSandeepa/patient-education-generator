@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import { ReduxProvider } from "@/providers/ReduxProvider";
+import { Navbar } from "@/components/layout/Navbar";
+import { AuthChecker } from "@/components/utils/AuthChecker";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -18,7 +20,10 @@ export default function RootLayout({
    return (
       <html lang="en">
          <body className={inter.className}>
-            <ReduxProvider>{children}</ReduxProvider>
+            <ReduxProvider>
+               <Navbar></Navbar>
+               <AuthChecker>{children}</AuthChecker>{" "}
+            </ReduxProvider>
          </body>
       </html>
    );
