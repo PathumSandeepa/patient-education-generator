@@ -6,6 +6,7 @@ import passport from "passport";
 
 import "./config/passport-setup";
 import authRoutes from "./routes/auth.routes";
+import planRoutes from './routes/plan.routes';
 
 dotenv.config();
 
@@ -24,6 +25,7 @@ app.use(express.json());
 app.use(passport.initialize());
 
 app.use("/api/auth", authRoutes);
+app.use('/api/plans', planRoutes);
 
 app.get("/api/health-check", (req: Request, res: Response) => {
    res.json({ message: "Server is healthy and running!" });
