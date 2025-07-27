@@ -23,7 +23,7 @@ export function Navbar() {
             { withCredentials: true }
          );
          dispatch(clearAuth());
-         router.push("/login");
+         window.location.href = "/login";
       } catch (error) {
          console.error("Logout failed", error);
       }
