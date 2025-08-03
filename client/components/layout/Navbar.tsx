@@ -2,7 +2,6 @@
 
 import { useSelector, useDispatch } from "react-redux";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import axios from "axios";
 import { RootState, AppDispatch } from "@/store/store";
 import { clearAuth } from "@/store/authSlice";
@@ -13,7 +12,6 @@ export function Navbar() {
       (state: RootState) => state.auth
    );
    const dispatch = useDispatch<AppDispatch>();
-   const router = useRouter();
 
    const handleLogout = async () => {
       try {
