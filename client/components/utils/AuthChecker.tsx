@@ -1,14 +1,15 @@
 "use client";
 
+import axios from "axios";
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useRouter, usePathname } from "next/navigation";
-import axios from "axios";
 
 import { setUser, clearAuth } from "@/store/authSlice";
 import { RootState, AppDispatch } from "@/store/store";
 
 const protectedRoutes = ["/dashboard"];
+const publicOnlyRoutes = ["/login"];
 
 export function AuthChecker({ children }: { children: React.ReactNode }) {
    const dispatch = useDispatch<AppDispatch>();
@@ -32,8 +33,11 @@ export function AuthChecker({ children }: { children: React.ReactNode }) {
             dispatch(clearAuth());
          }
       };
-      checkAuth();
-   }, [dispatch]);
+
+      if (isLoading) {
+         checkAuth();
+      }
+   }, [dispatch, isLoading]);
 
    useEffect(() => {
       if (isLoading) {
@@ -41,9 +45,14 @@ export function AuthChecker({ children }: { children: React.ReactNode }) {
       }
 
       const isProtectedRoute = protectedRoutes.includes(pathname);
+      const isPublicOnlyRoute = publicOnlyRoutes.includes(pathname);
 
       if (!isAuthenticated && isProtectedRoute) {
          router.push("/login");
+      }
+
+      if (isAuthenticated && isPublicOnlyRoute) {
+         router.push("/dashboard");
       }
    }, [isAuthenticated, isLoading, router, pathname]);
 
